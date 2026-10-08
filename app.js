@@ -22,29 +22,60 @@ const TOOLS = {
 };
 
 const LIMIT = 5;
+const HISTORY_LIMIT = 30;
 
 const state = {
   tool: localStorage.getItem('kasrai_tool') || 'rewrite',
   uses: Number(localStorage.getItem('kasrai_uses_v2') || 0),
   day: localStorage.getItem('kasrai_day') || '',
-  history: JSON.parse(localStorage.getItem('kasrai_history') || '[]')
+  history: JSON.parse(localStorage.getItem('kasrai_history') || '[]'),
+  lastInput: '',
+  lastOutput: ''
 };
 
 const $ = selector => document.querySelector(selector);
 
-const fa = number =>
-  String(number).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+function fa(number) {
+  return String(number).replace(
+    /\d/g,
+    d => '۰۱۲۳۴۵۶۷۸۹'[d]
+  );
+}
 
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function clean(text) {
+  return String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function sentences(text) {
+  return (
+    clean(text)
+      .match(/[^.!?؟\n]+[.!?؟]?/g)
+      ?.map(clean)
+      .filter(Boolean) || []
+  );
+}
+
+/* -------------------------
+   روز جدید
+------------------------- */
+
 if (state.day !== today()) {
   state.day = today();
   state.uses = 0;
+
   localStorage.setItem('kasrai_day', state.day);
   localStorage.setItem('kasrai_uses_v2', '0');
 }
+
+/* -------------------------
+   رابط کاربری
+------------------------- */
 
 function refresh() {
   if ($('#counter')) {
@@ -57,15 +88,22 @@ function refresh() {
   }
 
   if ($('#historyCount')) {
-    $('#historyCount').textContent = fa(state.history.length);
+    $('#historyCount').textContent =
+      fa(state.history.length);
   }
 }
 
 function setTool(tool) {
-  if (!TOOLS[tool]) tool = 'rewrite';
+  if (!TOOLS[tool]) {
+    tool = 'rewrite';
+  }
 
   state.tool = tool;
-  localStorage.setItem('kasrai_tool', tool);
+
+  localStorage.setItem(
+    'kasrai_tool',
+    tool
+  );
 
   document.querySelectorAll('.tool-card').forEach(card => {
     card.classList.toggle(
@@ -75,171 +113,206 @@ function setTool(tool) {
   });
 
   if ($('#toolTitle')) {
-    $('#toolTitle').textContent = TOOLS[tool].title;
+    $('#toolTitle').textContent =
+      TOOLS[tool].title;
   }
 
   if ($('#inputText')) {
-    $('#inputText').placeholder = TOOLS[tool].placeholder;
+    $('#inputText').placeholder =
+      TOOLS[tool].placeholder;
   }
 }
 
-function clean(text) {
-  return String(text)
-    .replace(/\s+/g, ' ')
-    .trim();
+function showResult(text) {
+  if ($('#output')) {
+    $('#output').textContent = text;
+  }
+
+  state.lastOutput = text;
 }
 
-function splitSentences(text) {
-  return (
-    text
-      .match(/[^.!?؟\n]+[.!?؟]?/g)
-      ?.map(clean)
-      .filter(Boolean) || [clean(text)]
-  );
+function showMessage(text) {
+  if ($('#output')) {
+    $('#output').textContent = text;
+  }
 }
 
 /* -------------------------
-   بازنویسی
+   بازنویسی حرفه‌ای
 ------------------------- */
 
 function rewriteText(text) {
   let result = clean(text);
 
   const replacements = [
-    ['خیلی خوب', 'بسیار خوب'],
-    ['خیلی زیاد', 'بیش از حد'],
     ['میخوام', 'می‌خواهم'],
     ['میخواد', 'می‌خواهد'],
     ['میشه', 'می‌شود'],
     ['نمیشه', 'نمی‌شود'],
     ['میتونم', 'می‌توانم'],
     ['میتونی', 'می‌توانی'],
+    ['میخوام', 'می‌خواهم'],
     ['بخاطر', 'به‌خاطر'],
-    ['اگه', 'اگر'],
-    ['ولی', 'اما'],
     ['واسه', 'برای'],
     ['یه', 'یک'],
-    ['چونکه', 'زیرا'],
+    ['اگه', 'اگر'],
+    ['ولی', 'اما'],
     ['حتما', 'حتماً'],
-    ['واقعا', 'واقعاً']
+    ['واقعا', 'واقعاً'],
+    ['خیلی خوب', 'بسیار خوب']
   ];
 
-  replacements.forEach(([from, to]) => {
-    result = result.split(from).join(to);
+  replacements.forEach(([a, b]) => {
+    result = result.split(a).join(b);
   });
 
-  return `نسخه بازنویسی‌شده:
+  result = result.charAt(0).toUpperCase() + result.slice(1);
+
+  return `نسخه حرفه‌ای بازنویسی‌شده:
 
 ${result}
 
-نکته: متن برای خوانایی، روانی و لحن حرفه‌ای‌تر تنظیم شد.`;
+✓ متن روان‌تر و مرتب‌تر شد.
+✓ عبارت‌های محاوره‌ای اصلاح شدند.
+✓ ساختار متن حفظ شد.`;
 }
 
 /* -------------------------
-   خلاصه‌ساز
+   خلاصه‌ساز حرفه‌ای
 ------------------------- */
 
 function summarizeText(text) {
-  const sentences = splitSentences(text);
+  const list = sentences(text);
 
-  if (sentences.length <= 2 && text.length < 180) {
-    return `خلاصه:
-
-${text}`;
+  if (!list.length) {
+    return 'متنی برای خلاصه‌سازی پیدا نشد.';
   }
 
-  const max = Math.max(
+  if (list.length <= 2 && text.length < 180) {
+    return `خلاصه:
+
+${text}
+
+نکات کلیدی:
+• متن کوتاه است و نیاز به خلاصه‌سازی بیشتر ندارد.`;
+  }
+
+  const count = Math.max(
     2,
-    Math.min(4, Math.ceil(sentences.length * 0.4))
+    Math.min(4, Math.ceil(list.length * 0.4))
   );
 
-  const selected = sentences.slice(0, max);
+  const selected = list.slice(0, count);
 
   return `خلاصه:
 
 ${selected.join(' ')}
 
-تعداد جملات اصلی: ${fa(sentences.length)}
-جملات انتخاب‌شده برای خلاصه: ${fa(selected.length)}`;
+نکات کلیدی:
+${selected.map(x => `• ${x}`).join('\n')}`;
 }
 
 /* -------------------------
    مترجم آفلاین
 ------------------------- */
 
-function translateText(text) {
-  const dictionary = {
-    'سلام': 'Hello',
-    'خوبی': 'How are you?',
-    'ممنون': 'Thank you',
-    'مرسی': 'Thanks',
-    'خداحافظ': 'Goodbye',
-    'دوست': 'friend',
-    'دوست من': 'my friend',
-    'مدرسه': 'school',
-    'دانشگاه': 'university',
-    'کتاب': 'book',
-    'درس': 'lesson',
-    'معلم': 'teacher',
-    'دانش‌آموز': 'student',
-    'سایت': 'website',
-    'هوش مصنوعی': 'artificial intelligence',
-    'کامپیوتر': 'computer',
-    'برنامه': 'program',
-    'پروژه': 'project',
-    'ایده': 'idea',
-    'کسری': 'Kasrai',
-    'امروز': 'today',
-    'فردا': 'tomorrow',
-    'خوب': 'good',
-    'بد': 'bad',
-    'بله': 'yes',
-    'نه': 'no',
-    'لطفا': 'please',
-    'لطفاً': 'please',
-    'من': 'I',
-    'تو': 'you',
-    'ما': 'we',
-    'آنها': 'they'
-  };
+const dictionary = {
+  'سلام': 'Hello',
+  'خوبی': 'How are you?',
+  'ممنون': 'Thank you',
+  'مرسی': 'Thanks',
+  'خداحافظ': 'Goodbye',
+  'لطفاً': 'Please',
+  'لطفا': 'Please',
+  'دوست': 'friend',
+  'دوست من': 'my friend',
+  'مدرسه': 'school',
+  'دانشگاه': 'university',
+  'کتاب': 'book',
+  'درس': 'lesson',
+  'معلم': 'teacher',
+  'دانش‌آموز': 'student',
+  'سایت': 'website',
+  'هوش مصنوعی': 'artificial intelligence',
+  'کامپیوتر': 'computer',
+  'برنامه': 'program',
+  'پروژه': 'project',
+  'ایده': 'idea',
+  'امروز': 'today',
+  'فردا': 'tomorrow',
+  'دیروز': 'yesterday',
+  'خوب': 'good',
+  'بد': 'bad',
+  'بله': 'yes',
+  'نه': 'no',
+  'من': 'I',
+  'تو': 'you',
+  'ما': 'we',
+  'آنها': 'they',
+  'خانه': 'home',
+  'کار': 'work',
+  'زمان': 'time',
+  'روز': 'day',
+  'شب': 'night',
+  'صبح': 'morning',
+  'زندگی': 'life',
+  'موفقیت': 'success',
+  'کمک': 'help',
+  'آموزش': 'education',
+  'رایگان': 'free',
+  'کسری': 'Kasrai'
+};
 
-  let output = text;
+function translateText(text) {
+  let result = clean(text);
 
   Object.keys(dictionary)
     .sort((a, b) => b.length - a.length)
-    .forEach(key => {
-      output = output.split(key).join(dictionary[key]);
+    .forEach(word => {
+      result = result.split(word)
+        .join(dictionary[word]);
     });
 
-  return `ترجمه آزمایشی:
+  return `ترجمه آزمایشی فارسی → انگلیسی:
 
-${output}
+${result}
 
-مترجم فعلی آفلاین است و برای عبارت‌های ساده طراحی شده است.`;
+نکته:
+این نسخه بدون API کار می‌کند و برای عبارت‌ها و واژه‌های پایه طراحی شده است.`;
 }
 
 /* -------------------------
-   ایده‌پرداز
+   ایده‌پرداز حرفه‌ای
 ------------------------- */
 
 function generateIdeas(text) {
   const topic = clean(text);
 
-  return `ایده برای «${topic}»:
+  return `ایده‌های حرفه‌ای برای «${topic}»:
 
-۱. یک ابزار رایگان و ساده مرتبط با این موضوع بساز.
+💡 ایده ۱
+ساخت یک ابزار رایگان و سریع مرتبط با موضوع.
 
-۲. یک آموزش کوتاه و مرحله‌به‌مرحله برای کاربران قرار بده.
+💡 ایده ۲
+ساخت آموزش مرحله‌به‌مرحله برای کاربران تازه‌کار.
 
-۳. یک صفحه نمونه یا دمو بساز تا کاربر قبل از استفاده نتیجه را ببیند.
+💡 ایده ۳
+ساخت صفحه نمونه یا دمو برای نمایش نتیجه قبل از استفاده.
 
-۴. پرسش‌های پرتکرار کاربران را جمع‌آوری و در بخش FAQ قرار بده.
+💡 ایده ۴
+ایجاد بخش پرسش‌های متداول کاربران.
 
-۵. امکان ذخیره و مشاهده نتایج قبلی را اضافه کن.
+💡 ایده ۵
+اضافه‌کردن امکان ذخیره و مشاهده نتایج قبلی.
 
-۶. یک قابلیت اشتراک‌گذاری نتیجه برای دوستان ایجاد کن.
+💡 ایده ۶
+ساخت قابلیت اشتراک‌گذاری نتیجه.
 
-۷. از کاربران بازخورد بگیر و بر اساس درخواست‌های واقعی، قابلیت‌های بعدی را اضافه کن.`;
+💡 ایده ۷
+گرفتن بازخورد از کاربران و اضافه‌کردن قابلیت‌های محبوب.
+
+🚀 پیشنهاد کسری:
+ابتدا ساده‌ترین ایده را اجرا کن و بعد بر اساس بازخورد کاربران توسعه بده.`;
 }
 
 /* -------------------------
@@ -249,25 +322,30 @@ function generateIdeas(text) {
 function studyHelp(text) {
   const topic = clean(text);
 
-  return `راهنمای کمک‌درسی برای:
+  return `کمک‌درسی برای:
 
 «${topic}»
 
-۱. ابتدا صورت سؤال یا مفهوم اصلی را مشخص کن.
+📚 روش پیشنهادی:
 
-۲. اطلاعاتی که سؤال به تو داده جدا کن.
+۱. صورت سؤال یا مفهوم اصلی را مشخص کن.
+
+۲. اطلاعات داده‌شده را جدا کن.
 
 ۳. فرمول، قانون یا مفهوم مرتبط را پیدا کن.
 
-۴. مسئله را مرحله‌به‌مرحله حل کن.
+۴. مسئله را مرحله‌به‌مرحله بررسی کن.
 
-۵. جواب نهایی را با صورت سؤال مقایسه کن.
+۵. محاسبات را انجام بده.
 
-اگر سؤال عددی باشد، بهتر است مراحل محاسبه هم بررسی شوند تا اشتباه احتمالی پیدا شود.`;
+۶. جواب نهایی را با صورت سؤال مقایسه کن.
+
+⭐ نکته:
+اگر سؤال ریاضی، فیزیک، شیمی یا درس دیگری داری، صورت کامل سؤال را وارد کن تا بتوانیم مرحله‌به‌مرحله بررسی‌اش کنیم.`;
 }
 
 /* -------------------------
-   موتور اصلی کسری
+   موتور کسری AI
 ------------------------- */
 
 function localAI(tool, input) {
@@ -315,38 +393,42 @@ function renderHistory() {
     return;
   }
 
-  state.history.slice(0, 8).forEach(item => {
-    const button = document.createElement('button');
+  state.history
+    .slice(0, 8)
+    .forEach(item => {
+      const button =
+        document.createElement('button');
 
-    button.className = 'history-item';
+      button.className =
+        'history-item';
 
-    const title =
-      TOOLS[item.tool]?.title || item.tool;
+      const title =
+        TOOLS[item.tool]?.title ||
+        item.tool;
 
-    const shortText =
-      item.input.length > 70
-        ? item.input.slice(0, 70) + '…'
-        : item.input;
+      const preview =
+        item.input.length > 70
+          ? item.input.slice(0, 70) + '…'
+          : item.input;
 
-    button.innerHTML = `
-      <b>${title}</b>
-      <small>${shortText}</small>
-    `;
+      button.innerHTML = `
+        <b>${title}</b>
+        <small>${preview}</small>
+      `;
 
-    button.addEventListener('click', () => {
-      if ($('#inputText')) {
-        $('#inputText').value = item.input;
-      }
+      button.addEventListener('click', () => {
+        setTool(item.tool);
 
-      if ($('#output')) {
-        $('#output').textContent = item.output;
-      }
+        if ($('#inputText')) {
+          $('#inputText').value =
+            item.input;
+        }
 
-      setTool(item.tool);
+        showResult(item.output);
+      });
+
+      box.appendChild(button);
     });
-
-    box.appendChild(button);
-  });
 }
 
 function saveHistory(input, output) {
@@ -357,7 +439,8 @@ function saveHistory(input, output) {
     at: Date.now()
   });
 
-  state.history = state.history.slice(0, 20);
+  state.history =
+    state.history.slice(0, HISTORY_LIMIT);
 
   localStorage.setItem(
     'kasrai_history',
@@ -369,83 +452,101 @@ function saveHistory(input, output) {
 }
 
 /* -------------------------
-   ابزارها
+   انتخاب ابزار
 ------------------------- */
 
-document.querySelectorAll('.tool-card').forEach(card => {
-  card.addEventListener('click', () => {
-    setTool(card.dataset.tool);
+document
+  .querySelectorAll('.tool-card')
+  .forEach(card => {
+    card.addEventListener('click', () => {
+      setTool(card.dataset.tool);
+
+      if ($('#output')) {
+        $('#output').textContent =
+          'نتیجه اینجا نمایش داده می‌شود.';
+      }
+    });
   });
-});
 
 /* -------------------------
-   دکمه اجرا
+   اجرا
 ------------------------- */
 
 if ($('#runBtn')) {
-  $('#runBtn').addEventListener('click', () => {
-    const input = $('#inputText')?.value.trim();
+  $('#runBtn').addEventListener(
+    'click',
+    () => {
+      const input =
+        $('#inputText')?.value.trim();
 
-    if (!input) {
-      if ($('#output')) {
-        $('#output').textContent =
-          'اول متن یا موضوعت را وارد کن.';
+      if (!input) {
+        showMessage(
+          'اول متن یا موضوعت را وارد کن.'
+        );
+        return;
       }
-      return;
+
+      if (state.uses >= LIMIT) {
+        showMessage(
+          'سقف استفاده رایگان امروز پر شده است. فردا دوباره ۵ استفاده رایگان داری.'
+        );
+        return;
+      }
+
+      state.lastInput = input;
+
+      $('#runBtn').disabled = true;
+      $('#runBtn').textContent =
+        'در حال آماده‌سازی...';
+
+      setTimeout(() => {
+        const result =
+          localAI(state.tool, input);
+
+        showResult(result);
+
+        state.uses++;
+
+        localStorage.setItem(
+          'kasrai_uses_v2',
+          state.uses
+        );
+
+        saveHistory(
+          input,
+          result
+        );
+
+        refresh();
+
+        $('#runBtn').disabled = false;
+        $('#runBtn').textContent =
+          '✨ اجرا';
+      }, 400);
     }
-
-    if (state.uses >= LIMIT) {
-      if ($('#output')) {
-        $('#output').textContent =
-          'سقف استفاده رایگان امروز پر شده است. فردا دوباره ۵ استفاده رایگان داری.';
-      }
-      return;
-    }
-
-    $('#runBtn').disabled = true;
-    $('#runBtn').textContent = 'در حال آماده‌سازی...';
-
-    setTimeout(() => {
-      const result = localAI(
-        state.tool,
-        input
-      );
-
-      if ($('#output')) {
-        $('#output').textContent = result;
-      }
-
-      state.uses++;
-
-      localStorage.setItem(
-        'kasrai_uses_v2',
-        state.uses
-      );
-
-      saveHistory(input, result);
-      refresh();
-
-      $('#runBtn').disabled = false;
-      $('#runBtn').textContent = '✨ اجرا';
-    }, 400);
-  });
+  );
 }
 
 /* -------------------------
-   پاک کردن متن
+   پاک کردن
 ------------------------- */
 
 if ($('#clearBtn')) {
-  $('#clearBtn').addEventListener('click', () => {
-    if ($('#inputText')) {
-      $('#inputText').value = '';
-    }
+  $('#clearBtn').addEventListener(
+    'click',
+    () => {
+      if ($('#inputText')) {
+        $('#inputText').value = '';
+      }
 
-    if ($('#output')) {
-      $('#output').textContent =
-        'نتیجه اینجا نمایش داده می‌شود.';
+      showMessage(
+        'نتیجه اینجا نمایش داده می‌شود.'
+      );
+
+      state.lastInput = '';
+      state.lastOutput = '';
     }
-  });
+  );
 }
 
 /* -------------------------
@@ -453,14 +554,19 @@ if ($('#clearBtn')) {
 ------------------------- */
 
 if ($('#clearHistory')) {
-  $('#clearHistory').addEventListener('click', () => {
-    state.history = [];
+  $('#clearHistory').addEventListener(
+    'click',
+    () => {
+      state.history = [];
 
-    localStorage.removeItem('kasrai_history');
+      localStorage.removeItem(
+        'kasrai_history'
+      );
 
-    renderHistory();
-    refresh();
-  });
+      renderHistory();
+      refresh();
+    }
+  );
 }
 
 /* -------------------------
@@ -468,23 +574,29 @@ if ($('#clearHistory')) {
 ------------------------- */
 
 if ($('#loginBtn')) {
-  $('#loginBtn').addEventListener('click', () => {
-    alert(
-      'سیستم ورود هنوز به بک‌اند متصل نشده است. این بخش را می‌توانیم در مرحله بعد فعال کنیم.'
-    );
-  });
+  $('#loginBtn').addEventListener(
+    'click',
+    () => {
+      alert(
+        'ورود کاربران هنوز به بک‌اند متصل نشده است.'
+      );
+    }
+  );
 }
 
 /* -------------------------
-   ارتقا / پلن
+   ارتقای پلن
 ------------------------- */
 
 if ($('#upgradeBtn')) {
-  $('#upgradeBtn').addEventListener('click', () => {
-    alert(
-      'سیستم پرداخت هنوز فعال نشده است. بعداً می‌توانیم پلن‌های پولی را به یک سیستم پرداخت امن متصل کنیم.'
-    );
-  });
+  $('#upgradeBtn').addEventListener(
+    'click',
+    () => {
+      alert(
+        'سیستم پرداخت هنوز فعال نشده است. بعداً می‌توانیم پلن‌های حرفه‌ای را اضافه کنیم.'
+      );
+    }
+  );
 }
 
 /* -------------------------
@@ -497,7 +609,7 @@ if ($('#year')) {
 }
 
 /* -------------------------
-   شروع برنامه
+   شروع
 ------------------------- */
 
 setTool(state.tool);

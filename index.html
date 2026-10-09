@@ -1,10 +1,237 @@
-<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080b14"><meta name="description" content="کسری AI؛ ابزارهای هوشمند فارسی برای بازنویسی، خلاصه‌سازی، ترجمه، ایده‌پردازی و مطالعه."><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="style.css"><title>کسری AI | ابزارهای هوشمند</title></head><body><div class="bg"></div>
-<header class="nav"><a class="brand" href="#"><span>ک</span> کسری AI</a><nav><a href="#tools">ابزارها</a><a href="#workspace">آزمایشگاه</a><a href="#pricing">Pro</a></nav><button class="btn ghost" id="loginBtn">ورود</button></header>
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b14">
+<meta name="description" content="کسری AI؛ ابزارهای هوشمند فارسی برای بازنویسی، خلاصه‌سازی، ترجمه، ایده‌پردازی، مطالعه و ویرایش تصویر.">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+<title>کسری AI | ابزارهای هوشمند</title>
+</head>
+
+<body>
+<div class="bg"></div>
+
+<header class="nav">
+  <a class="brand" href="#"><span>ک</span> کسری AI</a>
+  <nav>
+    <a href="#tools">ابزارها</a>
+    <a href="#workspace">آزمایشگاه</a>
+    <a href="#pricing">Pro</a>
+  </nav>
+  <button class="btn ghost" id="loginBtn">ورود</button>
+</header>
+
 <main>
-<section class="hero"><div class="badge">✨ دستیار هوشمند فارسی</div><h1>کارهای روزمره‌ات را<br><strong>سریع‌تر و ساده‌تر</strong> انجام بده.</h1><p>نسخه فعلی بدون API هم کار می‌کند؛ ابزارهای پایه داخل مرورگر اجرا می‌شوند و سابقه روی همین دستگاه ذخیره می‌شود.</p><div class="hero-actions"><a class="btn primary" href="#tools">شروع رایگان</a><a class="btn secondary" href="#pricing">مشاهده Pro</a></div><div class="stats"><div><b>۵</b><span>ابزار کاربردی</span></div><div><b>آفلاین</b><span>برای قابلیت‌های پایه</span></div><div><b>رایگان</b><span>شروع کار</span></div></div></section>
-<section id="tools" class="section"><div class="section-head"><div><span class="eyebrow">ابزارها</span><h2>ابزار مورد نیازت را انتخاب کن</h2></div><span class="plan-pill" id="planPill">پلن: رایگان</span></div><div class="tool-grid"><button class="tool-card" data-tool="rewrite"><span>✍️</span><b>بازنویسی</b><small>متن را روان‌تر کن</small></button><button class="tool-card" data-tool="summary"><span>📝</span><b>خلاصه‌ساز</b><small>متن را کوتاه کن</small></button><button class="tool-card" data-tool="translate"><span>🌐</span><b>مترجم</b><small>ترجمه پایه فارسی و انگلیسی</small></button><button class="tool-card" data-tool="ideas"><span>💡</span><b>ایده‌پرداز</b><small>برای پروژه و محتوا ایده بگیر</small></button><button class="tool-card" data-tool="study"><span>📚</span><b>کمک‌درسی</b><small>مطالب را مرحله‌ای مرور کن</small></button></div></section>
-<section id="workspace" class="workspace section"><div class="workspace-top"><div><span class="eyebrow">آزمایشگاه کسری</span><h2 id="toolTitle">بازنویسی متن</h2></div><span class="counter" id="counter"></span></div><div class="editor-grid"><div><label for="inputText">متن ورودی</label><textarea id="inputText" placeholder="متنت را اینجا وارد کن..."></textarea></div><div><label>نتیجه</label><div class="output" id="output">نتیجه اینجا نمایش داده می‌شود.</div></div></div><div class="workspace-bottom"><button class="btn secondary" id="clearBtn">پاک کردن</button><button class="btn primary" id="runBtn">✨ اجرا</button></div><p class="api-note">این نسخه برای تست و جمع‌آوری بازخورد طراحی شده و برای قابلیت‌های پایه به API نیاز ندارد. برای پاسخ‌های هوشمند واقعی، بعداً بک‌اند امن اضافه می‌کنیم.</p></section>
-<section class="section history-section"><div class="section-head"><div><span class="eyebrow">تاریخچه</span><h2>آخرین استفاده‌ها <small id="historyCount">۰</small></h2></div><button class="btn ghost" id="clearHistory">پاک کردن تاریخچه</button></div><div id="history" class="history"></div></section>
-<section id="pricing" class="section"><div class="center"><span class="eyebrow">نسخه آینده</span><h2>رایگان شروع کن، امکانات بیشتر در Pro</h2></div><div class="pricing"><div class="price-card"><h3>رایگان</h3><div class="price">۰ <small>تومان</small></div><ul><li>۵ استفاده در روز</li><li>۵ ابزار اصلی</li><li>تاریخچه روی دستگاه</li></ul><button class="btn secondary full">پلن فعلی</button></div><div class="price-card featured"><div class="popular">در حال آماده‌سازی</div><h3>Pro</h3><div class="price">به‌زودی</div><ul><li>استفاده بیشتر</li><li>پاسخ‌های هوشمندتر</li><li>حساب کاربری و همگام‌سازی</li><li>امکانات حرفه‌ای</li></ul><button class="btn primary full" id="upgradeBtn">به من یادآوری کن</button></div></div></section>
-<section class="section about"><span class="eyebrow">کسری AI</span><h2>نسخه پایه آماده تست است</h2><p>فعلاً تمرکز روی ساخت یک تجربه ساده، سریع و قابل استفاده است. بعد از گرفتن بازخورد، اتصال هوش مصنوعی واقعی و امکانات حساب کاربری را اضافه می‌کنیم.</p></section></main>
-<footer><span>© <span id="year"></span> کسری AI</span><span>نسخه آزمایشی 🚀</span></footer><script src="app.js"></script></body></html>
+
+<section class="hero">
+  <div class="badge">✨ دستیار هوشمند فارسی</div>
+
+  <h1>
+    کارهای روزمره‌ات را<br>
+    <strong>سریع‌تر و ساده‌تر</strong> انجام بده.
+  </h1>
+
+  <p>
+    نسخه فعلی بدون API هم کار می‌کند؛ ابزارهای پایه داخل مرورگر اجرا می‌شوند و سابقه روی همین دستگاه ذخیره می‌شود.
+  </p>
+
+  <div class="hero-actions">
+    <a class="btn primary" href="#tools">شروع رایگان</a>
+    <a class="btn secondary" href="#pricing">مشاهده Pro</a>
+  </div>
+
+  <div class="stats">
+    <div><b>۶</b><span>ابزار کاربردی</span></div>
+    <div><b>آفلاین</b><span>برای قابلیت‌های پایه</span></div>
+    <div><b>رایگان</b><span>شروع کار</span></div>
+  </div>
+</section>
+
+<!-- ابزارهای اصلی -->
+<section id="tools" class="section">
+
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">ابزارها</span>
+      <h2>ابزار مورد نیازت را انتخاب کن</h2>
+    </div>
+
+    <span class="plan-pill" id="planPill">پلن: رایگان</span>
+  </div>
+
+  <div class="tool-grid">
+
+    <button class="tool-card" data-tool="rewrite">
+      <span>✍️</span>
+      <b>بازنویسی</b>
+      <small>متن را روان‌تر کن</small>
+    </button>
+
+    <button class="tool-card" data-tool="summary">
+      <span>📝</span>
+      <b>خلاصه‌ساز</b>
+      <small>متن را کوتاه کن</small>
+    </button>
+
+    <button class="tool-card" data-tool="translate">
+      <span>🌐</span>
+      <b>مترجم</b>
+      <small>ترجمه پایه فارسی و انگلیسی</small>
+    </button>
+
+    <button class="tool-card" data-tool="ideas">
+      <span>💡</span>
+      <b>ایده‌پرداز</b>
+      <small>برای پروژه و محتوا ایده بگیر</small>
+    </button>
+
+    <button class="tool-card" data-tool="study">
+      <span>📚</span>
+      <b>کمک‌درسی</b>
+      <small>مطالب را مرحله‌ای مرور کن</small>
+    </button>
+
+    <!-- منوی جدید استودیوی تصویر -->
+    <a
+      class="tool-card"
+      href="./studio.html"
+      style="text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center"
+      aria-label="ورود به استودیوی تصویر کسری AI"
+    >
+      <span>🎨</span>
+      <b>استودیوی تصویر</b>
+      <small>ویرایش عکس، فیلتر و تبدیل متن به تصویر</small>
+    </a>
+
+  </div>
+</section>
+
+<!-- آزمایشگاه قبلی -->
+<section id="workspace" class="workspace section">
+
+  <div class="workspace-top">
+    <div>
+      <span class="eyebrow">آزمایشگاه کسری</span>
+      <h2 id="toolTitle">بازنویسی متن</h2>
+    </div>
+
+    <span class="counter" id="counter"></span>
+  </div>
+
+  <div class="editor-grid">
+
+    <div>
+      <label for="inputText">متن ورودی</label>
+      <textarea id="inputText" placeholder="متنت را اینجا وارد کن..."></textarea>
+    </div>
+
+    <div>
+      <label>نتیجه</label>
+      <div class="output" id="output">
+        نتیجه اینجا نمایش داده می‌شود.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="workspace-bottom">
+    <button class="btn secondary" id="clearBtn">پاک کردن</button>
+    <button class="btn primary" id="runBtn">✨ اجرا</button>
+  </div>
+
+  <p class="api-note">
+    این نسخه برای تست و جمع‌آوری بازخورد طراحی شده و برای قابلیت‌های پایه به API نیاز ندارد. برای پاسخ‌های هوشمند واقعی، بعداً بک‌اند امن اضافه می‌کنیم.
+  </p>
+
+</section>
+
+<!-- تاریخچه -->
+<section class="section history-section">
+
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">تاریخچه</span>
+      <h2>آخرین استفاده‌ها <small id="historyCount">۰</small></h2>
+    </div>
+
+    <button class="btn ghost" id="clearHistory">
+      پاک کردن تاریخچه
+    </button>
+  </div>
+
+  <div id="history" class="history"></div>
+
+</section>
+
+<!-- پلن‌ها -->
+<section id="pricing" class="section">
+
+  <div class="center">
+    <span class="eyebrow">نسخه آینده</span>
+    <h2>رایگان شروع کن، امکانات بیشتر در Pro</h2>
+  </div>
+
+  <div class="pricing">
+
+    <div class="price-card">
+      <h3>رایگان</h3>
+      <div class="price">۰ <small>تومان</small></div>
+
+      <ul>
+        <li>۵ استفاده در روز</li>
+        <li>۵ ابزار اصلی</li>
+        <li>تاریخچه روی دستگاه</li>
+        <li>استودیوی ویرایش تصویر</li>
+      </ul>
+
+      <button class="btn secondary full">پلن فعلی</button>
+    </div>
+
+    <div class="price-card featured">
+
+      <div class="popular">در حال آماده‌سازی</div>
+
+      <h3>Pro</h3>
+      <div class="price">به‌زودی</div>
+
+      <ul>
+        <li>استفاده بیشتر</li>
+        <li>پاسخ‌های هوشمندتر</li>
+        <li>حساب کاربری و همگام‌سازی</li>
+        <li>امکانات حرفه‌ای</li>
+      </ul>
+
+      <button class="btn primary full" id="upgradeBtn">
+        به من یادآوری کن
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- درباره سایت -->
+<section class="section about">
+  <span class="eyebrow">کسری AI</span>
+
+  <h2>نسخه پایه آماده تست است</h2>
+
+  <p>
+    فعلاً تمرکز روی ساخت یک تجربه ساده، سریع و قابل استفاده است.
+    بعد از گرفتن بازخورد، اتصال هوش مصنوعی واقعی و امکانات حساب کاربری را اضافه می‌کنیم.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <span>© <span id="year"></span> کسری AI</span>
+  <span>نسخه آزمایشی 🚀</span>
+</footer>
+
+<script src="app.js"></script>
+
+</body>
+</html>

@@ -326,6 +326,253 @@ footer {
 
     <button id="flipButton" class="secondary">
       ↔️ برعکس کردن
+   <section class="card">
+  <h2>۳. فیلترهای آماده</h2>
+
+  <p>یک فیلتر انتخاب کن تا ظاهر تصویر تغییر کند.</p>
+
+  <div class="button-row">
+    <button class="filterButton" data-filter="none">
+      عادی
+    </button>
+
+    <button class="filterButton" data-filter="grayscale(100%)">
+      سیاه‌وسفید
+    </button>
+
+    <button class="filterButton" data-filter="sepia(100%)">
+      قدیمی
+    </button>
+
+    <button class="filterButton" data-filter="invert(100%)">
+      نگاتیو
+    </button>
+
+    <button class="filterButton" data-filter="hue-rotate(90deg)">
+      رنگی
+    </button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>۴. ساخت متن برای تولید تصویر</h2>
+
+  <p>
+    موضوع تصویرت رو بنویس و سبک موردنظرت رو انتخاب کن.
+  </p>
+
+  <label class="field-label" for="promptInput">
+    موضوع تصویر
+  </label>
+
+  <textarea
+    id="promptInput"
+    rows="4"
+    placeholder="مثلاً: یک شهر آینده‌نگر در میان ابرها..."
+  ></textarea>
+
+  <label class="field-label" for="styleSelect">
+    سبک تصویر
+  </label>
+
+  <select id="styleSelect">
+    <option value="واقع‌گرایانه و با جزئیات بالا">
+      واقع‌گرایانه
+    </option>
+
+    <option value="هنری و نقاشی دیجیتال">
+      نقاشی دیجیتال
+    </option>
+
+    <option value="انیمه با رنگ‌های جذاب">
+      انیمه
+    </option>
+
+    <option value="سه‌بعدی و سینمایی">
+      سه‌بعدی
+    </option>
+
+    <option value="فانتزی و جادویی">
+      فانتزی
+    </option>
+
+    <option value="مینیمال و ساده">
+      مینیمال
+    </option>
+  </select>
+
+  <div class="button-row">
+    <button id="makePromptButton">
+      ✨ آماده‌سازی متن
+    </button>
+
+    <button id="copyPromptButton" class="success">
+      📋 کپی متن
+    </button>
+
+    <button id="clearPromptButton" class="danger">
+      پاک کردن
+    </button>
+  </div>
+
+  <label class="field-label" for="resultPrompt">
+    متن آماده‌شده
+  </label>
+
+  <textarea
+    id="resultPrompt"
+    rows="5"
+    readonly
+    placeholder="متن آماده‌شده اینجا نمایش داده می‌شود..."
+  ></textarea>
+
+  <div class="note">
+    توجه: این بخش متن مناسب برای تولید تصویر آماده می‌کند؛
+    برای ساخت واقعی تصویر با هوش مصنوعی، به سرویس تولید تصویر نیاز داری.
+  </div>
+</section>
+
+<footer>
+  ساخته‌شده برای استودیوی تصویر کسری AI ❤️
+</footer>
+
+</div>
+
+<script>
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+const emptyMessage = document.getElementById("emptyMessage");
+const status = document.getElementById("status");
+
+const brightness = document.getElementById("brightness");
+const contrast = document.getElementById("contrast");
+const saturation = document.getElementById("saturation");
+const blur = document.getElementById("blur");
+
+let originalImage = null;
+let rotation = 0;
+let flipped = false;
+let activeFilter = "none";
+let imageURL = null;
+
+function showStatus(message) {
+  status.textContent = message;
+}
+
+function updatePreview() {
+  if (!originalImage) return;
+
+  preview.style.filter =
+    `brightness(${brightness.value}%) ` +
+    `contrast(${contrast.value}%) ` +
+    `saturate(${saturation.value}%) ` +
+    `blur(${blur.value}px) ` +
+    (activeFilter === "none" ? "" : activeFilter);
+
+  preview.style.transform =
+    `rotate(${rotation}deg) scaleX(${flipped ? -1 : 1})`;
+
+  document.getElementById("brightnessValue").textContent =
+    brightness.value + "%";
+
+  document.getElementById("contrastValue").textContent =
+    contrast.value + "%";
+
+  document.getElementById("saturationValue").textContent =
+    saturation.value + "%";
+
+  document.getElementById("blurValue").textContent =
+    blur.value + "px";
+}
+
+imageInput.addEventListener("change", function () {
+  const file = this.files && this.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    showStatus("لطفاً یک فایل تصویری انتخاب کن.");
+    return;
+  }
+
+  if (imageURL) {
+    URL.revokeObjectURL(imageURL);
+  }
+
+  imageURL = URL.createObjectURL(file);
+  originalImage = new Image();
+
+  originalImage.onload = function () {
+    preview.src = imageURL;
+    preview.style.display = "block";
+    emptyMessage.style.display = "none";
+
+    rotation = 0;
+    flipped = false;
+    activeFilter = "none";
+
+    brightness.value = 100;
+    contrast.value = 100;
+    saturation.value = 100;
+    blur.value = 0;
+
+    updatePreview();
+    showStatus("تصویر با موفقیت بارگذاری شد. ✅");
+  };
+
+  originalImage.onerror = function () {
+    showStatus("بارگذاری تصویر ناموفق بود؛ تصویر دیگری انتخاب کن.");
+  };
+
+  originalImage.src = imageURL;
+});
+
+[brightness, contrast, saturation, blur].forEach(function (input) {
+  input.addEventListener("input", updatePreview);
+});
+
+document.getElementById("rotateLeft").addEventListener("click", function () {
+  if (!originalImage) {
+    showStatus("ابتدا یک تصویر انتخاب کن.");
+    return;
+  }
+
+  rotation -= 90;
+  updatePreview();
+});
+
+document.getElementById("rotateRight").addEventListener("click", function () {
+  if (!originalImage) {
+    showStatus("ابتدا یک تصویر انتخاب کن.");
+    return;
+  }
+
+  rotation += 90;
+  updatePreview();
+});
+
+document.getElementById("flipButton").addEventListener("click", function () {
+  if (!originalImage) {
+    showStatus("ابتدا یک تصویر انتخاب کن.");
+    return;
+  }
+
+  flipped = !flipped;
+  updatePreview();
+});
+
+document.querySelectorAll(".filterButton").forEach(function (button) {
+  button.addEventListener("click", function () {
+    if (!originalImage) {
+      showStatus("ابتدا یک تصویر انتخاب کن.");
+      return;
+    }
+
+    activeFilter = this.dataset.filter;
+    updatePreview();
+    showStatus("فیلتر اعمال شد. ✅");
+  });
+});
     </button>
   </div>
     </section>

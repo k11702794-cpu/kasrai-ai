@@ -1,722 +1,331 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090d1e">
-  <title>استودیوی تصویر | کسری AI</title>  <style>
-    :root {
-      --bg: #090d1e;
-      --card: #131a30;
-      --card2: #1b2440;
-      --text: #f5f7ff;
-      --muted: #aab4d0;
-      --purple: #8b5cf6;
-      --blue: #38bdf8;
-      --border: rgba(255,255,255,.1);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101828">
+<title>استودیوی تصویر | کسری AI</title>
 
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      color: var(--text);
-      background:
-        radial-gradient(ellipse at top right, #252052 0, transparent 45%),
-        var(--bg);
-      font-family: Tahoma, Arial, sans-serif;
-      line-height: 1.8;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  padding: 16px;
+  font-family: Tahoma, Arial, sans-serif;
+  background: #101828;
+  color: #f8fafc;
+  line-height: 1.8;
+}
 
-    button, input, textarea, select {
-      font: inherit;
-    }
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: auto;
+}
 
-    button {
-      cursor: pointer;
-    }
+header {
+  text-align: center;
+  padding: 18px 8px;
+}
 
-    .container {
-      width: min(100% - 28px, 1000px);
-      margin: auto;
-    }
+header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  color: #a5b4fc;
+}
 
-    header {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      background: rgba(9,13,30,.65);
-    }
+header p {
+  color: #cbd5e1;
+  margin: 0;
+}
 
-    .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+.card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 18px;
+  padding: 18px;
+  margin: 16px 0;
+}
 
-    .brand {
-      font-size: 23px;
-      font-weight: bold;
-    }
+h2 {
+  font-size: 19px;
+  margin-top: 0;
+  color: #c4b5fd;
+}
 
-    .brand span {
-      color: #a78bfa;
-    }
+button,
+.upload-label {
+  display: inline-block;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 15px;
+  margin: 5px 3px;
+  background: #6366f1;
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+}
 
-    .back {
-      color: white;
-      text-decoration: none;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      padding: 9px 14px;
-      border-radius: 12px;
-    }
+button:active,
+.upload-label:active {
+  transform: scale(.98);
+}
 
-    .hero {
-      text-align: center;
-      padding: 34px 0 22px;
-    }
+button.secondary {
+  background: #334155;
+}
 
-    .hero-icon {
-      font-size: 46px;
-    }
+button.success {
+  background: #059669;
+}
 
-    h1 {
-      margin: 6px 0;
-      font-size: clamp(25px, 5vw, 38px);
-    }
+button.danger {
+  background: #be123c;
+}
 
-    .hero p {
-      color: var(--muted);
-      margin: 8px auto;
-      max-width: 600px;
-    }
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #475569;
+  background: #0f172a;
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  margin: 6px 0 12px;
+}
 
-    .tabs {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 9px;
-      margin: 20px 0;
-    }
+input[type="range"] {
+  padding: 0;
+  accent-color: #818cf8;
+}
 
-    .tab {
-      padding: 13px 5px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--card);
-      color: var(--text);
-      transition: .2s;
-    }
+input[type="file"] {
+  display: none;
+}
 
-    .tab.active {
-      background: linear-gradient(120deg, #6d42d8, #2563eb);
-      border-color: transparent;
-    }
+label.field-label {
+  display: block;
+  color: #e2e8f0;
+  margin-top: 10px;
+}
 
-    .panel {
-      display: none;
-      background: rgba(19,26,48,.94);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 15px 45px rgba(0,0,0,.18);
-    }
+.preview-area {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f172a;
+  border: 2px dashed #475569;
+  border-radius: 14px;
+  padding: 10px;
+  overflow: hidden;
+}
 
-    .panel.active {
-      display: block;
-    }
+#preview {
+  display: none;
+  max-width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 8px;
+}
 
-    h2 {
-      font-size: 21px;
-      margin: 0 0 8px;
-    }
+#emptyMessage {
+  color: #94a3b8;
+  text-align: center;
+  padding: 20px;
+}
 
-    .description {
-      color: var(--muted);
-      font-size: 14px;
-      margin: 0 0 18px;
-    }
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 12px;
+}
 
-    .upload {
-      display: block;
-      text-align: center;
-      padding: 24px 12px;
-      border: 2px dashed #6555a9;
-      border-radius: 16px;
-      background: rgba(139,92,246,.07);
-      margin-bottom: 18px;
-      cursor: pointer;
-    }
+.button-row button {
+  flex: 1 1 120px;
+}
 
-    .upload strong {
-      display: block;
-      font-size: 18px;
-    }
+.control {
+  margin: 12px 0;
+}
 
-    .upload small {
-      color: var(--muted);
-    }
+.control-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
 
-    input[type="file"] {
-      display: none;
-    }
+.value {
+  color: #a5b4fc;
+  direction: ltr;
+}
 
-    .preview {
-      min-height: 180px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background:
-        linear-gradient(45deg, #141a2d 25%, transparent 25%),
-        linear-gradient(-45deg, #141a2d 25%, transparent 25%),
-        linear-gradient(45deg, transparent 75%, #141a2d 75%),
-        linear-gradient(-45deg, transparent 75%, #141a2d 75%),
-        #0d1325;
-      background-size: 22px 22px;
-      background-position: 0 0, 0 11px, 11px -11px, -11px 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin-bottom: 18px;
-    }
+.note {
+  background: #172554;
+  color: #dbeafe;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-top: 12px;
+}
 
-    .preview img {
-      display: none;
-      max-width: 100%;
-      max-height: 500px;
-      object-fit: contain;
-    }
+#status {
+  min-height: 28px;
+  color: #86efac;
+  font-size: 14px;
+}
 
-    .empty {
-      text-align: center;
-      color: var(--muted);
-      padding: 22px;
-    }
+footer {
+  text-align: center;
+  padding: 20px 8px;
+  color: #94a3b8;
+  font-size: 12px;
+}
 
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 16px;
-      margin: 20px 0;
-    }
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
 
-    .control {
-      background: #0e1529;
-      border: 1px solid var(--border);
-      padding: 13px;
-      border-radius: 13px;
-    }
+  .card {
+    padding: 13px;
+  }
 
-    .control label {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
+  header h1 {
+    font-size: 23px;
+  }
 
-    input[type="range"] {
-      width: 100%;
-      accent-color: #a78bfa;
-    }
+  button,
+  .upload-label {
+    padding: 10px 12px;
+  }
+}
+</style>
+</head>
 
-    .filters {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 9px;
-      margin: 18px 0;
-    }
+<body>
+<div class="container">
 
-    .filter {
-      padding: 10px 4px;
-      border: 1px solid var(--border);
-      background: #0e1529;
-      color: white;
-      border-radius: 12px;
-    }
+<header>
+  <h1>🎨 استودیوی تصویر کسری AI</h1>
+  <p>تصویرت را انتخاب کن، ویرایش کن و ذخیره کن.</p>
+</header>
 
-    .filter.active {
-      border-color: #a78bfa;
-      background: #34245d;
-    }
+<section class="card">
+  <h2>۱. انتخاب تصویر</h2>
 
-    .filter-icon {
-      display: block;
-      font-size: 22px;
-    }
+  <label class="upload-label" for="imageInput">
+    📁 انتخاب تصویر از گالری
+  </label>
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 16px;
-    }
+  <input
+    type="file"
+    id="imageInput"
+    accept="image/*"
+  >
 
-    .btn {
-      border: 0;
-      border-radius: 12px;
-      padding: 11px 16px;
-      color: white;
-      background: linear-gradient(120deg, #7c3aed, #2563eb);
-      flex: 1 1 130px;
-    }
+  <div class="preview-area">
+    <p id="emptyMessage">
+      هنوز تصویری انتخاب نکرده‌ای.
+      <br>
+      برای شروع، روی «انتخاب تصویر از گالری» بزن.
+    </p>
 
-    .btn.secondary {
-      background: var(--card2);
-      border: 1px solid var(--border);
-    }
-
-    .btn:disabled {
-      opacity: .45;
-      cursor: not-allowed;
-    }
-
-    .field {
-      width: 100%;
-      color: white;
-      background: #0b1225;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-      outline: none;
-      margin: 6px 0 14px;
-    }
-
-    .field:focus {
-      border-color: #a78bfa;
-    }
-
-    textarea.field {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .notice {
-      border: 1px solid rgba(56,189,248,.25);
-      background: rgba(56,189,248,.07);
-      color: #c8eaff;
-      padding: 13px;
-      border-radius: 13px;
-      font-size: 13px;
-      margin-top: 14px;
-    }
-
-    .status {
-      color: #a7f3d0;
-      font-size: 13px;
-      margin-top: 10px;
-      min-height: 24px;
-    }
-
-    .text-canvas {
-      display: none;
-    }
-
-    footer {
-      color: var(--muted);
-      text-align: center;
-      padding: 12px 0 28px;
-      font-size: 12px;
-    }
-
-    @media (max-width: 500px) {
-      .panel {
-        padding: 14px;
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .tabs {
-        gap: 6px;
-      }
-
-      .tab {
-        font-size: 12px;
-      }
-
-      .filters {
-        grid-template-columns: repeat(3, minmax(0,1fr));
-      }
-    }
-  </style></head><body><header>
-  <div class="container header-inner">
-    <div class="brand">🤖 کسری <span>AI</span></div>
-    <a class="back" href="./index.html">← بازگشت به سایت</a>
+    <img id="preview" alt="پیش‌نمایش تصویر">
   </div>
-</header><main class="container">  <section class="hero">
-    <div class="hero-icon">🎨</div>
-    <h1>استودیوی تصویر</h1>
-    <p>عکس‌هایت را ویرایش کن، فیلترهای جذاب بساز و برای خلق تصاویر جدید آماده شو.</p>
-  </section>  <nav class="tabs" aria-label="ابزارهای تصویر">
-    <button class="tab active" data-panel="editor">🪄 ویرایش عکس</button>
-    <button class="tab" data-panel="filters">🌈 فیلتر عکس</button>
-    <button class="tab" data-panel="generator">🖼️ متن به تصویر</button>
-  </nav>  <!-- ویرایش عکس -->  <section class="panel active" id="editor">
-    <h2>🪄 ویرایشگر عکس</h2>
-    <p class="description">عکس را از گالری انتخاب کن و تغییرات دلخواهت را انجام بده.</p><label class="upload" for="imageInput">
-  <strong>📁 انتخاب عکس از گوشی</strong>
-  <small>برای شروع لمس کن</small>
-</label>
 
-<input id="imageInput" type="file" accept="image/*">
+  <div class="button-row">
+    <button id="downloadButton" class="success">
+      ⬇️ دانلود تصویر
+    </button>
 
-<div class="preview">
-  <div class="empty" id="emptyEditor">هنوز عکسی انتخاب نکرده‌ای 📷</div>
-  <img id="editorImage" alt="پیش‌نمایش عکس">
-</div>
+    <button id="resetButton" class="secondary">
+      ↩️ بازنشانی
+    </button>
+  </div>
 
-<div class="controls">
+  <p id="status" role="status"></p>
+</section>
+
+<section class="card">
+  <h2>۲. تنظیمات تصویر</h2>
+
   <div class="control">
-    <label for="brightness">روشنایی <span id="brightnessValue">100%</span></label>
-    <input id="brightness" type="range" min="30" max="200" value="100">
+    <div class="control-header">
+      <label for="brightness">روشنایی</label>
+      <span class="value" id="brightnessValue">100%</span>
+    </div>
+    <input
+      type="range"
+      id="brightness"
+      min="0"
+      max="200"
+      value="100"
+    >
   </div>
 
   <div class="control">
-    <label for="contrast">کنتراست <span id="contrastValue">100%</span></label>
-    <input id="contrast" type="range" min="30" max="200" value="100">
+    <div class="control-header">
+      <label for="contrast">کنتراست</label>
+      <span class="value" id="contrastValue">100%</span>
+    </div>
+    <input
+      type="range"
+      id="contrast"
+      min="0"
+      max="200"
+      value="100"
+    >
   </div>
 
   <div class="control">
-    <label for="saturation">اشباع رنگ <span id="saturationValue">100%</span></label>
-    <input id="saturation" type="range" min="0" max="200" value="100">
+    <div class="control-header">
+      <label for="saturation">اشباع رنگ</label>
+      <span class="value" id="saturationValue">100%</span>
+    </div>
+    <input
+      type="range"
+      id="saturation"
+      min="0"
+      max="200"
+      value="100"
+    >
   </div>
 
   <div class="control">
-    <label for="blur">محو شدن <span id="blurValue">0px</span></label>
-    <input id="blur" type="range" min="0" max="5" step=".5" value="0">
+    <div class="control-header">
+      <label for="blur">تاری تصویر</label>
+      <span class="value" id="blurValue">0px</span>
+    </div>
+    <input
+      type="range"
+      id="blur"
+      min="0"
+      max="10"
+      value="0"
+    >
   </div>
-</div>
 
-<div class="buttons">
-  <button class="btn secondary" id="rotateBtn">🔄 چرخاندن عکس</button>
-  <button class="btn secondary" id="flipBtn">↔️ آینه‌ای کردن</button>
-  <button class="btn secondary" id="resetBtn">بازنشانی</button>
-  <button class="btn" id="downloadEdit" disabled>📥 دانلود عکس</button>
-</div>
-
-<div class="status" id="editorStatus" aria-live="polite"></div>
-
-  </section>  <!-- فیلتر عکس -->  <section class="panel" id="filters">
-    <h2>🌈 فیلترهای عکس</h2>
-    <p class="description">یک فیلتر انتخاب کن و نتیجه را پیش از دانلود ببین.</p><label class="upload" for="filterInput">
-  <strong>📁 انتخاب عکس</strong>
-  <small>عکس موردنظرت را از گالری انتخاب کن</small>
-</label>
-
-<input id="filterInput" type="file" accept="image/*">
-
-<div class="preview">
-  <div class="empty" id="emptyFilter">عکس خودت را انتخاب کن ✨</div>
-  <img id="filterImage" alt="پیش‌نمایش فیلتر">
-</div>
-
-<div class="filters">
-  <button class="filter active" data-filter="normal"><span class="filter-icon">🖼️</span>اصلی</button>
-  <button class="filter" data-filter="grayscale(100%)"><span class="filter-icon">⚫</span>سیاه‌وسفید</button>
-  <button class="filter" data-filter="sepia(85%)"><span class="filter-icon">📜</span>قدیمی</button>
-  <button class="filter" data-filter="saturate(160%)"><span class="filter-icon">🌈</span>رنگی</button>
-  <button class="filter" data-filter="contrast(125%) saturate(115%)"><span class="filter-icon">🎬</span>سینمایی</button>
-  <button class="filter" data-filter="brightness(110%) saturate(80%)"><span class="filter-icon">☀️</span>روشن</button>
-  <button class="filter" data-filter="hue-rotate(35deg) saturate(125%)"><span class="filter-icon">🪄</span>جادویی</button>
-  <button class="filter" data-filter="sepia(25%) saturate(140%)"><span class="filter-icon">🌅</span>گرم</button>
-  <button class="filter" data-filter="hue-rotate(180deg)"><span class="filter-icon">❄️</span>سرد</button>
-</div>
-
-<div class="buttons">
-  <button class="btn secondary" id="resetFilter">بازگشت به حالت اصلی</button>
-  <button class="btn" id="downloadFilter" disabled>📥 دانلود عکس فیلترشده</button>
-</div>
-
-<div class="status" id="filterStatus" aria-live="polite"></div>
-
-  </section>  <!-- متن به تصویر -->  <section class="panel" id="generator">
-    <h2>🖼️ تبدیل متن به تصویر</h2>
-    <p class="description">ایده‌ات را توصیف کن تا برای ساخت تصویر آماده شود.</p><label for="prompt">توضیح تصویر دلخواهت</label>
-<textarea class="field" id="prompt" maxlength="1000" placeholder="مثلاً: یک شهر آینده‌نگر با نورهای بنفش، آسمان پرستاره و سبک سینمایی..."></textarea>
-
-<label for="style">سبک تصویر</label>
-<select class="field" id="style">
-  <option value="realistic">واقع‌گرایانه</option>
-  <option value="anime">انیمه</option>
-  <option value="fantasy">فانتزی</option>
-  <option value="digital-art">هنر دیجیتال</option>
-  <option value="cinematic">سینمایی</option>
-  <option value="watercolor">آبرنگ</option>
-</select>
-
-<button class="btn" id="preparePrompt">✨ آماده‌سازی درخواست تصویر</button>
-
-<div class="notice">
-  ℹ️ این بخش به‌تنهایی تصویر هوش مصنوعی تولید نمی‌کند. برای تولید واقعی باید به یک سرویس تولید تصویر متصل شود. در حال حاضر می‌توانی توضیحاتت را آماده و کپی کنی.
-</div>
-
-<label for="preparedPrompt">متن آماده‌شده</label>
-<textarea class="field" id="preparedPrompt" readonly placeholder="متن آماده‌شده اینجا نمایش داده می‌شود..."></textarea>
-
-<div class="buttons">
-  <button class="btn secondary" id="copyPrompt">📋 کپی متن</button>
-  <button class="btn secondary" id="clearPrompt">🗑️ پاک کردن</button>
-</div>
-
-<div class="status" id="generatorStatus" aria-live="polite"></div>
-
-  </section><canvas id="workCanvas" class="text-canvas"></canvas>
-
-</main><footer class="container">
-  کسری AI © <span id="year"></span> — استودیوی خلاقیت تو 💜
-</footer><script>
-(function () {
-  "use strict";
-
-  const $ = id => document.getElementById(id);
-
-  $("year").textContent = new Date().getFullYear();
-
-  // جابه‌جایی بین بخش‌ها
-  document.querySelectorAll(".tab").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-      document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-
-      button.classList.add("active");
-      $(button.dataset.panel).classList.add("active");
-    });
-  });
-
-  // وضعیت ویرایشگر
-  let editorFile = null;
-  let editorUrl = null;
-  let rotation = 0;
-  let flipped = false;
-
-  const editorImage = $("editorImage");
-
-  $("imageInput").addEventListener("change", event => {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      $("editorStatus").textContent = "لطفاً یک فایل تصویری انتخاب کن.";
-      return;
-    }
-
-    if (editorUrl) URL.revokeObjectURL(editorUrl);
-
-    editorFile = file;
-    editorUrl = URL.createObjectURL(file);
-    editorImage.onload = () => {
-      $("emptyEditor").style.display = "none";
-      editorImage.style.display = "block";
-      $("downloadEdit").disabled = false;
-      updateEditor();
-      $("editorStatus").textContent = "عکس آماده ویرایش است.";
-    };
-    editorImage.onerror = () => {
-      $("editorStatus").textContent = "باز کردن عکس ناموفق بود.";
-    };
-    editorImage.src = editorUrl;
-  });
-
-  function updateEditor() {
-    const brightness = $("brightness").value;
-    const contrast = $("contrast").value;
-    const saturation = $("saturation").value;
-    const blur = $("blur").value;
-
-    $("brightnessValue").textContent = brightness + "%";
-    $("contrastValue").textContent = contrast + "%";
-    $("saturationValue").textContent = saturation + "%";
-    $("blurValue").textContent = blur + "px";
-
-    editorImage.style.filter =
-      `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%) blur(${blur}px)`;
-
-    editorImage.style.transform =
-      `rotate(${rotation}deg) scaleX(${flipped ? -1 : 1})`;
-  }
-
-  ["brightness", "contrast", "saturation", "blur"].forEach(id => {
-    $(id).addEventListener("input", updateEditor);
-  });
-
-  $("rotateBtn").addEventListener("click", () => {
-    rotation = (rotation + 90) % 360;
-    updateEditor();
-  });
-
-  $("flipBtn").addEventListener("click", () => {
-    flipped = !flipped;
-    updateEditor();
-  });
-
-  $("resetBtn").addEventListener("click", () => {
-    $("brightness").value = 100;
-    $("contrast").value = 100;
-    $("saturation").value = 100;
-    $("blur").value = 0;
-    rotation = 0;
-    flipped = false;
-    updateEditor();
-    $("editorStatus").textContent = "تنظیمات بازنشانی شدند.";
-  });
-
-  // اعمال واقعی تنظیمات روی تصویر با Canvas
-  function renderEditedImage(image, filter, angle, flip, mirrorFilter) {
-    const canvas = $("workCanvas");
-    const ctx = canvas.getContext("2d");
-
-    const width = image.naturalWidth;
-    const height = image.naturalHeight;
-
-    if (!width || !height) {
-      throw new Error("تصویر هنوز آماده نیست.");
-    }
-
-    const normalizedAngle = ((angle % 360) + 360) % 360;
-    const sideways = normalizedAngle === 90 || normalizedAngle === 270;
-
-    canvas.width = sideways ? height : width;
-    canvas.height = sideways ? width : height;
-
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(normalizedAngle * Math.PI / 180);
-    ctx.scale(flip ? -1 : 1, 1);
-    ctx.filter = filter;
-
-    // پس از چرخش، مبدأ تصویر در مرکز قرار می‌گیرد.
-    ctx.drawImage(image, -width / 2, -height / 2, width, height);
-    ctx.restore();
-    ctx.filter = "none";
-
-    return canvas;
-  }
-
-  $("downloadEdit").addEventListener("click", () => {
-    if (!editorFile || !editorImage.complete) return;
-
-    try {
-      const filter =
-        `brightness(${$("brightness").value}%) ` +
-        `contrast(${$("contrast").value}%) ` +
-        `saturate(${$("saturation").value}%) ` +
-        `blur(${$("blur").value}px)`;
-
-      const canvas = renderEditedImage(editorImage, filter, rotation, flipped);
-
-      canvas.toBlob(blob => {
-        if (!blob) {
-          $("editorStatus").textContent = "ساخت فایل تصویر ناموفق بود.";
-          return;
-        }
-        downloadBlob(blob, "kasrai-ai-edited.png");
-        $("editorStatus").textContent = "تصویر ویرایش‌شده آماده دانلود است.";
-      }, "image/png");
-    } catch (error) {
-      $("editorStatus").textContent = "خطا در ویرایش تصویر. لطفاً عکس دیگری امتحان کن.";
-    }
-  });
-
-  // فیلترها
-  let filterUrl = null;
-  let filterValue = "normal";
-  const filterImage = $("filterImage");
-
-  $("filterInput").addEventListener("change", event => {
-    const file = event.target.files && event.target.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      $("filterStatus").textContent = "لطفاً یک تصویر انتخاب کن.";
-      return;
-    }
-
-    if (filterUrl) URL.revokeObjectURL(filterUrl);
-    filterUrl = URL.createObjectURL(file);
-
-    filterImage.onload = () => {
-      $("emptyFilter").style.display = "none";
-      filterImage.style.display = "block";
-      $("downloadFilter").disabled = false;
-      applyFilter(filterValue);
-      $("filterStatus").textContent = "عکس آماده است.";
-    };
-
-    filterImage.onerror = () => {
-      $("filterStatus").textContent = "باز کردن عکس ناموفق بود.";
-    };
-
-    filterImage.src = filterUrl;
-  });
-
-  function applyFilter(value) {
-    filterValue = value;
-    filterImage.style.filter = value === "normal" ? "none" : value;
-
-    document.querySelectorAll(".filter").forEach(button => {
-      button.classList.toggle("active", button.dataset.filter === value);
-    });
-  }
-
-  document.querySelectorAll(".filter").forEach(button => {
-    button.addEventListener("click", () => {
-      applyFilter(button.dataset.filter);
-      $("filterStatus").textContent = "فیلتر انتخاب‌شده: " + button.textContent.trim();
-    });
-  });
-
-  $("resetFilter").addEventListener("click", () => {
-    applyFilter("normal");
-    $("filterStatus").textContent = "فیلتر حذف شد.";
-  });
-
-  $("downloadFilter").addEventListener("click", () => {
-    if (!filterUrl || !filterImage.complete) return;
-
-    try {
-      const canvas = renderEditedImage(filterImage, filterValue === "normal" ? "none" : filterValue, 0, false);
-
-      canvas.toBlob(blob => {
-        if (!blob) {
-          $("filterStatus").textContent = "ساخت تصویر ناموفق بود.";
-          return;
-        }
-        downloadBlob(blob, "kasrai-ai-filter.png");
-        $("filterStatus").textContent = "عکس فیلترشده آماده دانلود است.";
-      }, "image/png");
-    } catch (error) {
-      $("filterStatus").textContent = "خطا در ساخت عکس. دوباره امتحان کن.";
-    }
-  });
-
-  function downloadBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-  }
-
-  // آماده‌سازی توضیحات تصویر
-  const styles = {
-    realistic: "photorealistic, realistic lighting and details",
-    anime: "anime illustration, expressive characters, detailed anime art",
-    fantasy: "fantasy art, magical atmosphere, imaginative details",
-    "digital-art": "high-quality digital art, polished composition",
-    cinematic: "cinematic composition, dramatic lighting, movie still",
-    watercolor: "watercolor painting, soft brush strokes, artistic texture"
-  };
-
-  $("preparePrompt").addEventListener("click", () => {
-    const prompt = $("prompt").value.trim();
-  
+  <div class="button-row">
+    <button id="rotateLeft" class="secondary">
+      ↶ چرخش چپ
+    </button>
+
+    <button id="rotateRight" class="secondary">
+      ↷ چرخش راست
+    </button>
+
+    <button id="flipButton" class="secondary">
+      ↔️ برعکس کردن
+    </button>
+  </div>
+    </section>

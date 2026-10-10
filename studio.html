@@ -13,7 +13,7 @@
 
 body {
   margin: 0;
-  padding: 16px;
+  padding: 14px;
   font-family: Tahoma, Arial, sans-serif;
   background: #101828;
   color: #f8fafc;
@@ -21,19 +21,19 @@ body {
 }
 
 .container {
-  width: 100%;
   max-width: 900px;
+  width: 100%;
   margin: auto;
 }
 
 header {
   text-align: center;
-  padding: 18px 8px;
+  padding: 18px 5px;
 }
 
 header h1 {
   margin: 0 0 8px;
-  font-size: 28px;
+  font-size: 26px;
   color: #a5b4fc;
 }
 
@@ -46,12 +46,12 @@ header p {
   background: #1e293b;
   border: 1px solid #334155;
   border-radius: 18px;
-  padding: 18px;
+  padding: 16px;
   margin: 16px 0;
 }
 
 h2 {
-  font-size: 19px;
+  font-size: 18px;
   margin-top: 0;
   color: #c4b5fd;
 }
@@ -61,8 +61,8 @@ button,
   display: inline-block;
   border: 0;
   border-radius: 10px;
-  padding: 11px 15px;
-  margin: 5px 3px;
+  padding: 11px 14px;
+  margin: 4px 2px;
   background: #6366f1;
   color: white;
   font-family: inherit;
@@ -71,9 +71,9 @@ button,
   text-align: center;
 }
 
-button:active,
-.upload-label:active {
-  transform: scale(.98);
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
 button.secondary {
@@ -111,22 +111,22 @@ input[type="file"] {
   display: none;
 }
 
-label.field-label {
+.field-label {
   display: block;
   color: #e2e8f0;
   margin-top: 10px;
 }
 
 .preview-area {
-  min-height: 180px;
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #0f172a;
   border: 2px dashed #475569;
   border-radius: 14px;
-  padding: 10px;
-  overflow: hidden;
+  padding: 12px;
+  overflow: auto;
 }
 
 #preview {
@@ -135,6 +135,7 @@ label.field-label {
   max-height: 480px;
   object-fit: contain;
   border-radius: 8px;
+  transform-origin: center;
 }
 
 #emptyMessage {
@@ -146,7 +147,7 @@ label.field-label {
 .button-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
+  gap: 5px;
   margin-top: 12px;
 }
 
@@ -182,6 +183,7 @@ label.field-label {
   min-height: 28px;
   color: #86efac;
   font-size: 14px;
+  overflow-wrap: anywhere;
 }
 
 footer {
@@ -193,20 +195,20 @@ footer {
 
 @media (max-width: 480px) {
   body {
-    padding: 10px;
+    padding: 9px;
   }
 
   .card {
-    padding: 13px;
+    padding: 12px;
   }
 
   header h1 {
-    font-size: 23px;
+    font-size: 22px;
   }
 
   button,
   .upload-label {
-    padding: 10px 12px;
+    padding: 10px;
   }
 }
 </style>
@@ -217,7 +219,7 @@ footer {
 
 <header>
   <h1>🎨 استودیوی تصویر کسری AI</h1>
-  <p>تصویرت را انتخاب کن، ویرایش کن و ذخیره کن.</p>
+  <p>عکست را انتخاب کن، ویرایش کن و ذخیره کن.</p>
 </header>
 
 <section class="card">
@@ -227,33 +229,35 @@ footer {
     📁 انتخاب تصویر از گالری
   </label>
 
-  <input
-    type="file"
-    id="imageInput"
-    accept="image/*"
-  >
+  <input type="file" id="imageInput" accept="image/*">
 
   <div class="preview-area">
     <p id="emptyMessage">
       هنوز تصویری انتخاب نکرده‌ای.
       <br>
-      برای شروع، روی «انتخاب تصویر از گالری» بزن.
+      برای شروع روی انتخاب تصویر از گالری بزن.
     </p>
 
     <img id="preview" alt="پیش‌نمایش تصویر">
   </div>
 
   <div class="button-row">
-    <button id="downloadButton" class="success">
+    <button id="downloadButton" class="success" disabled>
       ⬇️ دانلود تصویر
     </button>
 
-    <button id="resetButton" class="secondary">
-      ↩️ بازنشانی
+    <button id="resetButton" class="secondary" disabled>
+      ↩️ بازنشانی تنظیمات
+    </button>
+
+    <button id="removeButton" class="danger" disabled>
+      🗑️ حذف تصویر
     </button>
   </div>
 
-  <p id="status" role="status"></p>
+  <p id="status" role="status" aria-live="polite">
+    برای شروع یک تصویر انتخاب کن.
+  </p>
 </section>
 
 <section class="card">
@@ -264,13 +268,8 @@ footer {
       <label for="brightness">روشنایی</label>
       <span class="value" id="brightnessValue">100%</span>
     </div>
-    <input
-      type="range"
-      id="brightness"
-      min="0"
-      max="200"
-      value="100"
-    >
+    <input type="range" id="brightness"
+      min="0" max="200" value="100">
   </div>
 
   <div class="control">
@@ -278,13 +277,8 @@ footer {
       <label for="contrast">کنتراست</label>
       <span class="value" id="contrastValue">100%</span>
     </div>
-    <input
-      type="range"
-      id="contrast"
-      min="0"
-      max="200"
-      value="100"
-    >
+    <input type="range" id="contrast"
+      min="0" max="200" value="100">
   </div>
 
   <div class="control">
@@ -292,13 +286,8 @@ footer {
       <label for="saturation">اشباع رنگ</label>
       <span class="value" id="saturationValue">100%</span>
     </div>
-    <input
-      type="range"
-      id="saturation"
-      min="0"
-      max="200"
-      value="100"
-    >
+    <input type="range" id="saturation"
+      min="0" max="200" value="100">
   </div>
 
   <div class="control">
@@ -306,30 +295,28 @@ footer {
       <label for="blur">تاری تصویر</label>
       <span class="value" id="blurValue">0px</span>
     </div>
-    <input
-      type="range"
-      id="blur"
-      min="0"
-      max="10"
-      value="0"
-    >
+    <input type="range" id="blur"
+      min="0" max="10" value="0">
   </div>
 
   <div class="button-row">
-    <button id="rotateLeft" class="secondary">
+    <button id="rotateLeft" class="secondary" disabled>
       ↶ چرخش چپ
     </button>
 
-    <button id="rotateRight" class="secondary">
+    <button id="rotateRight" class="secondary" disabled>
       ↷ چرخش راست
     </button>
 
-    <button id="flipButton" class="secondary">
+    <button id="flipButton" class="secondary" disabled>
       ↔️ برعکس کردن
-   <section class="card">
-  <h2>۳. فیلترهای آماده</h2>
+    </button>
+  </div>
+</section>
 
-  <p>یک فیلتر انتخاب کن تا ظاهر تصویر تغییر کند.</p>
+<section class="card">
+  <h2>۳. فیلترهای آماده</h2>
+  <p>یک فیلتر انتخاب کن تا ظاهر عکس تغییر کند.</p>
 
   <div class="button-row">
     <button class="filterButton" data-filter="none">
@@ -351,54 +338,42 @@ footer {
     <button class="filterButton" data-filter="hue-rotate(90deg)">
       رنگی
     </button>
+
+    <button class="filterButton" data-filter="sepia(50%) saturate(150%)">
+      گرم
+    </button>
+
+    <button class="filterButton" data-filter="contrast(140%) saturate(130%)">
+      پررنگ
+    </button>
   </div>
 </section>
 
 <section class="card">
-  <h2>۴. ساخت متن برای تولید تصویر</h2>
+  <h2>۴. آماده‌سازی متن تولید تصویر</h2>
 
   <p>
-    موضوع تصویرت رو بنویس و سبک موردنظرت رو انتخاب کن.
+    موضوع موردنظرت را بنویس و سبک تصویر را انتخاب کن.
   </p>
 
   <label class="field-label" for="promptInput">
     موضوع تصویر
   </label>
 
-  <textarea
-    id="promptInput"
-    rows="4"
-    placeholder="مثلاً: یک شهر آینده‌نگر در میان ابرها..."
-  ></textarea>
+  <textarea id="promptInput" rows="4"
+    placeholder="مثلاً یک شهر آینده‌نگر در میان ابرها..."></textarea>
 
   <label class="field-label" for="styleSelect">
     سبک تصویر
   </label>
 
   <select id="styleSelect">
-    <option value="واقع‌گرایانه و با جزئیات بالا">
-      واقع‌گرایانه
-    </option>
-
-    <option value="هنری و نقاشی دیجیتال">
-      نقاشی دیجیتال
-    </option>
-
-    <option value="انیمه با رنگ‌های جذاب">
-      انیمه
-    </option>
-
-    <option value="سه‌بعدی و سینمایی">
-      سه‌بعدی
-    </option>
-
-    <option value="فانتزی و جادویی">
-      فانتزی
-    </option>
-
-    <option value="مینیمال و ساده">
-      مینیمال
-    </option>
+    <option value="واقع‌گرایانه با جزئیات بالا">واقع‌گرایانه</option>
+    <option value="نقاشی دیجیتال هنری">نقاشی دیجیتال</option>
+    <option value="انیمه با رنگ‌های جذاب">انیمه</option>
+    <option value="سه‌بعدی و سینمایی">سه‌بعدی</option>
+    <option value="فانتزی و جادویی">فانتزی</option>
+    <option value="مینیمال و ساده">مینیمال</option>
   </select>
 
   <div class="button-row">
@@ -411,7 +386,7 @@ footer {
     </button>
 
     <button id="clearPromptButton" class="danger">
-      پاک کردن
+      پاک کردن متن
     </button>
   </div>
 
@@ -419,16 +394,13 @@ footer {
     متن آماده‌شده
   </label>
 
-  <textarea
-    id="resultPrompt"
-    rows="5"
-    readonly
-    placeholder="متن آماده‌شده اینجا نمایش داده می‌شود..."
-  ></textarea>
+  <textarea id="resultPrompt" rows="5" readonly
+    placeholder="متن آماده‌شده اینجا نمایش داده می‌شود..."></textarea>
 
   <div class="note">
-    توجه: این بخش متن مناسب برای تولید تصویر آماده می‌کند؛
-    برای ساخت واقعی تصویر با هوش مصنوعی، به سرویس تولید تصویر نیاز داری.
+    این قسمت متن درخواست تصویر را آماده می‌کند.
+    برای تولید واقعی تصویر با هوش مصنوعی باید سرویس تولید تصویر
+    به برنامه متصل شود.
   </div>
 </section>
 
@@ -439,140 +411,342 @@ footer {
 </div>
 
 <script>
-const imageInput = document.getElementById("imageInput");
-const preview = document.getElementById("preview");
-const emptyMessage = document.getElementById("emptyMessage");
-const status = document.getElementById("status");
+(function () {
+  "use strict";
 
-const brightness = document.getElementById("brightness");
-const contrast = document.getElementById("contrast");
-const saturation = document.getElementById("saturation");
-const blur = document.getElementById("blur");
+  const $ = function (id) {
+    return document.getElementById(id);
+  };
 
-let originalImage = null;
-let rotation = 0;
-let flipped = false;
-let activeFilter = "none";
-let imageURL = null;
+  const imageInput = $("imageInput");
+  const preview = $("preview");
+  const emptyMessage = $("emptyMessage");
+  const status = $("status");
 
-function showStatus(message) {
-  status.textContent = message;
-}
+  const brightness = $("brightness");
+  const contrast = $("contrast");
+  const saturation = $("saturation");
+  const blur = $("blur");
 
-function updatePreview() {
-  if (!originalImage) return;
+  let originalImage = null;
+  let imageURL = null;
+  let rotation = 0;
+  let flipped = false;
+  let activeFilter = "none";
 
-  preview.style.filter =
-    `brightness(${brightness.value}%) ` +
-    `contrast(${contrast.value}%) ` +
-    `saturate(${saturation.value}%) ` +
-    `blur(${blur.value}px) ` +
-    (activeFilter === "none" ? "" : activeFilter);
-
-  preview.style.transform =
-    `rotate(${rotation}deg) scaleX(${flipped ? -1 : 1})`;
-
-  document.getElementById("brightnessValue").textContent =
-    brightness.value + "%";
-
-  document.getElementById("contrastValue").textContent =
-    contrast.value + "%";
-
-  document.getElementById("saturationValue").textContent =
-    saturation.value + "%";
-
-  document.getElementById("blurValue").textContent =
-    blur.value + "px";
-}
-
-imageInput.addEventListener("change", function () {
-  const file = this.files && this.files[0];
-
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    showStatus("لطفاً یک فایل تصویری انتخاب کن.");
-    return;
+  function showStatus(message) {
+    status.textContent = message;
   }
 
-  if (imageURL) {
-    URL.revokeObjectURL(imageURL);
+  function hasImage() {
+    return originalImage !== null &&
+      originalImage.complete &&
+      originalImage.naturalWidth > 0;
   }
 
-  imageURL = URL.createObjectURL(file);
-  originalImage = new Image();
+  function setImageButtons(enabled) {
+    [
+      "downloadButton",
+      "resetButton",
+      "removeButton",
+      "rotateLeft",
+      "rotateRight",
+      "flipButton"
+    ].forEach(function (id) {
+      $(id).disabled = !enabled;
+    });
+  }
 
-  originalImage.onload = function () {
-    preview.src = imageURL;
-    preview.style.display = "block";
-    emptyMessage.style.display = "none";
+  function getFilterString() {
+    const parts = [
+      "brightness(" + brightness.value + "%)",
+      "contrast(" + contrast.value + "%)",
+      "saturate(" + saturation.value + "%)"
+    ];
 
-    rotation = 0;
-    flipped = false;
-    activeFilter = "none";
+    if (Number(blur.value) > 0) {
+      parts.push("blur(" + blur.value + "px)");
+    }
 
+    if (activeFilter !== "none") {
+      parts.push(activeFilter);
+    }
+
+    return parts.join(" ");
+  }
+
+  function updatePreview() {
+    $("brightnessValue").textContent = brightness.value + "%";
+    $("contrastValue").textContent = contrast.value + "%";
+    $("saturationValue").textContent = saturation.value + "%";
+    $("blurValue").textContent = blur.value + "px";
+
+    if (!hasImage()) return;
+
+    preview.style.filter = getFilterString();
+    preview.style.transform =
+      "rotate(" + rotation + "deg) scaleX(" +
+      (flipped ? "-1" : "1") + ")";
+  }
+
+  function resetSettings() {
     brightness.value = 100;
     contrast.value = 100;
     saturation.value = 100;
     blur.value = 0;
 
+    rotation = 0;
+    flipped = false;
+    activeFilter = "none";
+
     updatePreview();
-    showStatus("تصویر با موفقیت بارگذاری شد. ✅");
-  };
-
-  originalImage.onerror = function () {
-    showStatus("بارگذاری تصویر ناموفق بود؛ تصویر دیگری انتخاب کن.");
-  };
-
-  originalImage.src = imageURL;
-});
-
-[brightness, contrast, saturation, blur].forEach(function (input) {
-  input.addEventListener("input", updatePreview);
-});
-
-document.getElementById("rotateLeft").addEventListener("click", function () {
-  if (!originalImage) {
-    showStatus("ابتدا یک تصویر انتخاب کن.");
-    return;
   }
 
-  rotation -= 90;
-  updatePreview();
-});
+  imageInput.addEventListener("change", function () {
+    const file = imageInput.files && imageInput.files[0];
 
-document.getElementById("rotateRight").addEventListener("click", function () {
-  if (!originalImage) {
-    showStatus("ابتدا یک تصویر انتخاب کن.");
-    return;
-  }
+    if (!file) return;
 
-  rotation += 90;
-  updatePreview();
-});
+    if (!file.type || !file.type.startsWith("image/")) {
+      showStatus("لطفاً یک فایل تصویری انتخاب کن.");
+      imageInput.value = "";
+      return;
+    }
 
-document.getElementById("flipButton").addEventListener("click", function () {
-  if (!originalImage) {
-    showStatus("ابتدا یک تصویر انتخاب کن.");
-    return;
-  }
+    if (imageURL) {
+      URL.revokeObjectURL(imageURL);
+      imageURL = null;
+    }
 
-  flipped = !flipped;
-  updatePreview();
-});
+    const newURL = URL.createObjectURL(file);
+    const newImage = new Image();
 
-document.querySelectorAll(".filterButton").forEach(function (button) {
-  button.addEventListener("click", function () {
-    if (!originalImage) {
+    showStatus("در حال بارگذاری تصویر...");
+
+    newImage.onload = function () {
+      originalImage = newImage;
+      imageURL = newURL;
+
+      preview.src = newURL;
+      preview.style.display = "block";
+      emptyMessage.style.display = "none";
+
+      resetSettings();
+      setImageButtons(true);
+
+      showStatus("تصویر با موفقیت بارگذاری شد. ✅");
+    };
+
+    newImage.onerror = function () {
+      URL.revokeObjectURL(newURL);
+      showStatus("تصویر باز نشد؛ لطفاً فایل دیگری انتخاب کن.");
+    };
+
+    newImage.src = newURL;
+  });
+
+  [brightness, contrast, saturation, blur].forEach(function (input) {
+    input.addEventListener("input", updatePreview);
+  });
+
+  $("rotateLeft").addEventListener("click", function () {
+    if (!hasImage()) {
       showStatus("ابتدا یک تصویر انتخاب کن.");
       return;
     }
 
-    activeFilter = this.dataset.filter;
+    rotation = (rotation - 90) % 360;
     updatePreview();
-    showStatus("فیلتر اعمال شد. ✅");
   });
-});
-    </button>
-  </div>
-    </section>
+
+  $("rotateRight").addEventListener("click", function () {
+    if (!hasImage()) {
+      showStatus("ابتدا یک تصویر انتخاب کن.");
+      return;
+    }
+
+    rotation = (rotation + 90) % 360;
+    updatePreview();
+  });
+
+  $("flipButton").addEventListener("click", function () {
+    if (!hasImage()) {
+      showStatus("ابتدا یک تصویر انتخاب کن.");
+      return;
+    }
+
+    flipped = !flipped;
+    updatePreview();
+  });
+
+  document.querySelectorAll(".filterButton").forEach(function (button) {
+    button.addEventListener("click", function () {
+      if (!hasImage()) {
+        showStatus("ابتدا یک تصویر انتخاب کن.");
+        return;
+      }
+
+      activeFilter = this.dataset.filter || "none";
+      updatePreview();
+      showStatus("فیلتر انتخاب شد. ✅");
+    });
+  });
+
+  $("resetButton").addEventListener("click", function () {
+    if (!hasImage()) {
+      showStatus("ابتدا یک تصویر انتخاب کن.");
+      return;
+    }
+
+    resetSettings();
+    showStatus("تنظیمات به حالت اولیه برگشت. ✅");
+  });
+
+  $("removeButton").addEventListener("click", function () {
+    if (imageURL) {
+      URL.revokeObjectURL(imageURL);
+    }
+
+    imageURL = null;
+    originalImage = null;
+    preview.removeAttribute("src");
+    preview.style.display = "none";
+    preview.style.filter = "";
+    preview.style.transform = "";
+
+    emptyMessage.style.display = "block";
+    imageInput.value = "";
+
+    resetSettings();
+    setImageButtons(false);
+
+    showStatus("تصویر حذف شد.");
+  });
+
+  function renderEditedImage() {
+    return new Promise(function (resolve, reject) {
+      if (!hasImage()) {
+        reject(new Error("ابتدا یک تصویر انتخاب کن."));
+        return;
+      }
+
+      const width = originalImage.naturalWidth;
+      const height = originalImage.naturalHeight;
+      const sideways = Math.abs(rotation % 180) === 90;
+
+      const canvas = document.createElement("canvas");
+      canvas.width = sideways ? height : width;
+      canvas.height = sideways ? width : height;
+
+      const ctx = canvas.getContext("2d");
+
+      if (!ctx) {
+        reject(new Error("امکان پردازش تصویر وجود ندارد."));
+        return;
+      }
+
+      ctx.translate(canvas.width / 2, canvas.height / 2);
+      ctx.rotate(rotation * Math.PI / 180);
+      ctx.scale(flipped ? -1 : 1, 1);
+      ctx.filter = getFilterString();
+
+      ctx.drawImage(
+        originalImage,
+        -width / 2,
+        -height / 2,
+        width,
+        height
+      );
+
+      canvas.toBlob(function (blob) {
+        if (blob) {
+          resolve(blob);
+        } else {
+          reject(new Error("ساخت فایل تصویر ناموفق بود."));
+        }
+      }, "image/png");
+    });
+  }
+
+  $("downloadButton").addEventListener("click", async function () {
+    try {
+      showStatus("در حال آماده‌سازی تصویر...");
+      const blob = await renderEditedImage();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "kasrai-ai-image.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(function () {
+        URL.revokeObjectURL(url);
+      }, 30000);
+
+      showStatus("درخواست ذخیرهٔ تصویر انجام شد. ✅");
+    } catch (error) {
+      showStatus(error.message || "دانلود تصویر ناموفق بود.");
+    }
+  });
+
+  $("makePromptButton").addEventListener("click", function () {
+    const topic = $("promptInput").value.trim();
+    const style = $("styleSelect").value;
+
+    if (!topic) {
+      showStatus("ابتدا موضوع تصویر را بنویس.");
+      $("promptInput").focus();
+      return;
+    }
+
+    $("resultPrompt").value =
+      "یک تصویر با موضوع «" + topic + "» به سبک " + style +
+      " بساز؛ با ترکیب‌بندی حرفه‌ای، نورپردازی مناسب، " +
+      "جزئیات دقیق و کیفیت بالا.";
+
+    showStatus("متن درخواست تصویر آماده شد. ✅");
+  });
+
+  $("copyPromptButton").addEventListener("click", async function () {
+    const result = $("resultPrompt");
+
+    if (!result.value.trim()) {
+      showStatus("ابتدا متن درخواست تصویر را آماده کن.");
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(result.value);
+      } else {
+        result.focus();
+        result.select();
+
+        if (!document.execCommand("copy")) {
+          throw new Error("copy failed");
+        }
+      }
+
+      showStatus("متن کپی شد. ✅");
+    } catch (error) {
+      result.focus();
+      result.select();
+      showStatus("متن انتخاب شد؛ آن را کپی کن.");
+    }
+  });
+
+  $("clearPromptButton").addEventListener("click", function () {
+    $("promptInput").value = "";
+    $("resultPrompt").value = "";
+    showStatus("متن‌ها پاک شدند.");
+  });
+
+  setImageButtons(false);
+  updatePreview();
+})();
+</script>
+
+</body>
+  </html>

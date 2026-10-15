@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080b14">
-<meta name="description" content="کسری AI؛ ابزارهای هوشمند فارسی برای بازنویسی، خلاصه‌سازی، ترجمه، ایده‌پردازی، مطالعه و ویرایش تصویر.">
+<meta name="description" content="کسری AI؛ ابزارهای هوشمند فارسی و انگلیسی">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 <title>کسری AI | ابزارهای هوشمند</title>
@@ -14,223 +14,171 @@
 <div class="bg"></div>
 
 <header class="nav">
-  <a class="brand" href="#"><span>ک</span> کسری AI</a>
-<nav>
-    <a href="#tools">ابزارها</a>
-    <a href="#workspace">آزمایشگاه</a>
-    <a href="#pricing">Pro</a>
+  <a class="brand" href="#"><span>ک</span> <span data-i18n="brand">کسری AI</span></a>
 
-    <button
-        id="languageBtn"
-        class="btn ghost"
-        type="button"
-        onclick="toggleLanguage()"
-    >
-        English
-    </button>
-</nav>
-  <button class="btn ghost" id="loginBtn">ورود</button>
+  <nav>
+    <a href="#tools" data-i18n="navTools">ابزارها</a>
+    <a href="#workspace" data-i18n="navWorkspace">آزمایشگاه</a>
+    <a href="#pricing" data-i18n="navPricing">Pro</a>
+    <button id="languageBtn" class="btn ghost" type="button">English</button>
+  </nav>
+
+  <button class="btn ghost" id="loginBtn" data-i18n="login">ورود</button>
 </header>
 
 <main>
-
 <section class="hero">
-  <div class="badge">✨ دستیار هوشمند فارسی</div>
+  <div class="badge" data-i18n="badge">✨ دستیار هوشمند فارسی</div>
 
   <h1>
-    کارهای روزمره‌ات را<br>
-    <strong>سریع‌تر و ساده‌تر</strong> انجام بده.
+    <span data-i18n="heroLine1">کارهای روزمره‌ات را</span><br>
+    <strong data-i18n="heroLine2">سریع‌تر و ساده‌تر</strong>
+    <span data-i18n="heroLine3">انجام بده.</span>
   </h1>
 
-  <p>
-    نسخه فعلی بدون API هم کار می‌کند؛ ابزارهای پایه داخل مرورگر اجرا می‌شوند و سابقه روی همین دستگاه ذخیره می‌شود.
+  <p data-i18n="heroDescription">
+    ابزارهای کاربردی برای نوشتن، خلاصه‌سازی، ترجمه، ایده‌پردازی و مطالعه.
   </p>
 
   <div class="hero-actions">
-    <a class="btn primary" href="#tools">شروع رایگان</a>
-    <a class="btn secondary" href="#pricing">مشاهده Pro</a>
+    <a class="btn primary" href="#tools" data-i18n="startFree">شروع رایگان</a>
+    <a class="btn secondary" href="#pricing" data-i18n="viewPro">مشاهده Pro</a>
   </div>
 
   <div class="stats">
-    <div><b>۶</b><span>ابزار کاربردی</span></div>
-    <div><b>آفلاین</b><span>برای قابلیت‌های پایه</span></div>
-    <div><b>رایگان</b><span>شروع کار</span></div>
+    <div><b data-i18n="statTools">۵</b><span data-i18n="statToolsLabel">ابزار کاربردی</span></div>
+    <div><b data-i18n="statOffline">آفلاین</b><span data-i18n="statOfflineLabel">برای قابلیت‌های پایه</span></div>
+    <div><b data-i18n="statFree">رایگان</b><span data-i18n="statFreeLabel">شروع کار</span></div>
   </div>
 </section>
 
-<!-- ابزارهای اصلی -->
 <section id="tools" class="section">
-
   <div class="section-head">
     <div>
-      <span class="eyebrow">ابزارها</span>
-      <h2>ابزار مورد نیازت را انتخاب کن</h2>
+      <span class="eyebrow" data-i18n="toolsEyebrow">ابزارها</span>
+      <h2 data-i18n="toolsHeading">ابزار مورد نیازت را انتخاب کن</h2>
     </div>
-
     <span class="plan-pill" id="planPill">پلن: رایگان</span>
   </div>
 
   <div class="tool-grid">
-
     <button class="tool-card" data-tool="rewrite">
-      <span>✍️</span>
-      <b>بازنویسی</b>
-      <small>متن را روان‌تر کن</small>
+      <span>✍️</span><b data-i18n="toolRewrite">بازنویسی</b>
+      <small data-i18n="toolRewriteDesc">متن را روان‌تر کن</small>
     </button>
 
     <button class="tool-card" data-tool="summary">
-      <span>📝</span>
-      <b>خلاصه‌ساز</b>
-      <small>متن را کوتاه کن</small>
+      <span>📝</span><b data-i18n="toolSummary">خلاصه‌ساز</b>
+      <small data-i18n="toolSummaryDesc">متن را کوتاه کن</small>
     </button>
 
     <button class="tool-card" data-tool="translate">
-      <span>🌐</span>
-      <b>مترجم</b>
-      <small>ترجمه پایه فارسی و انگلیسی</small>
+      <span>🌐</span><b data-i18n="toolTranslate">مترجم</b>
+      <small data-i18n="toolTranslateDesc">ترجمه پایه فارسی و انگلیسی</small>
     </button>
 
     <button class="tool-card" data-tool="ideas">
-      <span>💡</span>
-      <b>ایده‌پرداز</b>
-      <small>برای پروژه و محتوا ایده بگیر</small>
+      <span>💡</span><b data-i18n="toolIdeas">ایده‌پرداز</b>
+      <small data-i18n="toolIdeasDesc">برای پروژه و محتوا ایده بگیر</small>
     </button>
 
     <button class="tool-card" data-tool="study">
-      <span>📚</span>
-      <b>کمک‌درسی</b>
-      <small>مطالب را مرحله‌ای مرور کن</small>
+      <span>📚</span><b data-i18n="toolStudy">کمک‌درسی</b>
+      <small data-i18n="toolStudyDesc">مطالب را مرحله‌ای مرور کن</small>
     </button>
-
-    <!-- منوی جدید استودیوی تصویر -->
-
   </div>
 </section>
 
-<!-- آزمایشگاه قبلی -->
 <section id="workspace" class="workspace section">
-
   <div class="workspace-top">
     <div>
-      <span class="eyebrow">آزمایشگاه کسری</span>
+      <span class="eyebrow" data-i18n="workspaceEyebrow">آزمایشگاه کسری</span>
       <h2 id="toolTitle">بازنویسی متن</h2>
     </div>
-
     <span class="counter" id="counter"></span>
   </div>
 
   <div class="editor-grid">
-
     <div>
-      <label for="inputText">متن ورودی</label>
-      <textarea id="inputText" placeholder="متنت را اینجا وارد کن..."></textarea>
+      <label for="inputText" data-i18n="inputLabel">متن ورودی</label>
+      <textarea id="inputText" placeholder="متنت را اینجا وارد کن؛ مثلاً یک پیام یا پاراگراف..."></textarea>
     </div>
 
     <div>
-      <label>نتیجه</label>
-      <div class="output" id="output">
-        نتیجه اینجا نمایش داده می‌شود.
-      </div>
+      <label data-i18n="resultLabel">نتیجه</label>
+      <div class="output" id="output" data-i18n="resultPlaceholder">نتیجه اینجا نمایش داده می‌شود.</div>
     </div>
-
   </div>
 
   <div class="workspace-bottom">
-    <button class="btn secondary" id="clearBtn">پاک کردن</button>
-    <button class="btn primary" id="runBtn">✨ اجرا</button>
+    <button class="btn secondary" id="clearBtn" data-i18n="clear">پاک کردن</button>
+    <button class="btn primary" id="runBtn" data-i18n="run">✨ اجرا</button>
   </div>
 
-  <p class="api-note">
-    این نسخه برای تست و جمع‌آوری بازخورد طراحی شده و برای قابلیت‌های پایه به API نیاز ندارد. برای پاسخ‌های هوشمند واقعی، بعداً بک‌اند امن اضافه می‌کنیم.
+  <p class="api-note" data-i18n="apiNote">
+    این نسخه برای تست طراحی شده است. ابزارهای پایه در مرورگر اجرا می‌شوند و برای پاسخ‌های هوشمند واقعی، بعداً می‌توان بک‌اند امن اضافه کرد.
   </p>
-
 </section>
 
-<!-- تاریخچه -->
 <section class="section history-section">
-
   <div class="section-head">
     <div>
-      <span class="eyebrow">تاریخچه</span>
-      <h2>آخرین استفاده‌ها <small id="historyCount">۰</small></h2>
+      <span class="eyebrow" data-i18n="historyEyebrow">تاریخچه</span>
+      <h2><span data-i18n="historyHeading">آخرین استفاده‌ها</span> <small id="historyCount">۰</small></h2>
     </div>
-
-    <button class="btn ghost" id="clearHistory">
-      پاک کردن تاریخچه
-    </button>
+    <button class="btn ghost" id="clearHistory" data-i18n="clearHistory">پاک کردن تاریخچه</button>
   </div>
 
   <div id="history" class="history"></div>
-
 </section>
 
-<!-- پلن‌ها -->
 <section id="pricing" class="section">
-
   <div class="center">
-    <span class="eyebrow">نسخه آینده</span>
-    <h2>رایگان شروع کن، امکانات بیشتر در Pro</h2>
+    <span class="eyebrow" data-i18n="pricingEyebrow">نسخه آینده</span>
+    <h2 data-i18n="pricingHeading">رایگان شروع کن، امکانات بیشتر در Pro</h2>
   </div>
 
   <div class="pricing">
-
     <div class="price-card">
-      <h3>رایگان</h3>
-      <div class="price">۰ <small>تومان</small></div>
-
+      <h3 data-i18n="freePlan">رایگان</h3>
+      <div class="price"><span data-i18n="freePrice">۰</span> <small data-i18n="currency">تومان</small></div>
       <ul>
-        <li>۵ استفاده در روز</li>
-        <li>۵ ابزار اصلی</li>
-        <li>تاریخچه روی دستگاه</li>
-        <li>استودیوی ویرایش تصویر</li>
+        <li data-i18n="freeFeature1">۵ استفاده در روز</li>
+        <li data-i18n="freeFeature2">۵ ابزار اصلی</li>
+        <li data-i18n="freeFeature3">تاریخچه روی دستگاه</li>
       </ul>
-
-      <button class="btn secondary full">پلن فعلی</button>
+      <button class="btn secondary full" data-i18n="currentPlan">پلن فعلی</button>
     </div>
 
     <div class="price-card featured">
-
-      <div class="popular">در حال آماده‌سازی</div>
-
+      <div class="popular" data-i18n="comingSoon">در حال آماده‌سازی</div>
       <h3>Pro</h3>
-      <div class="price">به‌زودی</div>
-
+      <div class="price" data-i18n="soon">به‌زودی</div>
       <ul>
-        <li>استفاده بیشتر</li>
-        <li>پاسخ‌های هوشمندتر</li>
-        <li>حساب کاربری و همگام‌سازی</li>
-        <li>امکانات حرفه‌ای</li>
+        <li data-i18n="proFeature1">استفاده بیشتر</li>
+        <li data-i18n="proFeature2">پاسخ‌های هوشمندتر</li>
+        <li data-i18n="proFeature3">حساب کاربری و همگام‌سازی</li>
+        <li data-i18n="proFeature4">امکانات حرفه‌ای</li>
       </ul>
-
-      <button class="btn primary full" id="upgradeBtn">
-        به من یادآوری کن
-      </button>
-
+      <button class="btn primary full" id="upgradeBtn" data-i18n="remindMe">به من یادآوری کن</button>
     </div>
-
   </div>
 </section>
 
-<!-- درباره سایت -->
 <section class="section about">
-  <span class="eyebrow">کسری AI</span>
-
-  <h2>نسخه پایه آماده تست است</h2>
-
-  <p>
-    فعلاً تمرکز روی ساخت یک تجربه ساده، سریع و قابل استفاده است.
-    بعد از گرفتن بازخورد، اتصال هوش مصنوعی واقعی و امکانات حساب کاربری را اضافه می‌کنیم.
+  <span class="eyebrow">Kasrai AI</span>
+  <h2 data-i18n="aboutHeading">نسخه پایه آماده تست است</h2>
+  <p data-i18n="aboutDescription">
+    فعلاً تمرکز روی ساخت تجربه‌ای ساده و سریع است. بعد از گرفتن بازخورد، می‌توانیم امکانات بیشتری اضافه کنیم.
   </p>
 </section>
-
 </main>
 
 <footer>
-  <span>© <span id="year"></span> کسری AI</span>
-  <span>نسخه آزمایشی 🚀</span>
+  <span>© <span id="year"></span> Kasrai AI</span>
+  <span data-i18n="footerText">نسخه آزمایشی 🚀</span>
 </footer>
 
 <script src="app.js"></script>
-
 </body>
-</html>
+  </html>

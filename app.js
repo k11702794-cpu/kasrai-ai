@@ -615,3 +615,58 @@ if ($('#year')) {
 setTool(state.tool);
 renderHistory();
 refresh();
+/* -------------------------
+   تغییر زبان فارسی و انگلیسی
+------------------------- */
+
+const LANGUAGE_TEXTS = {
+  fa: {
+    direction: 'rtl',
+    button: 'English',
+    title: 'کسری AI | ابزارهای هوشمند'
+  },
+  en: {
+    direction: 'ltr',
+    button: 'فارسی',
+    title: 'Kasrai AI | Smart Tools'
+  }
+};
+
+function toggleLanguage() {
+  const currentLanguage =
+    localStorage.getItem('kasrai_language') || 'fa';
+
+  const nextLanguage =
+    currentLanguage === 'fa' ? 'en' : 'fa';
+
+  localStorage.setItem(
+    'kasrai_language',
+    nextLanguage
+  );
+
+  location.reload();
+}
+
+function initializeLanguageButton() {
+  const language =
+    localStorage.getItem('kasrai_language') || 'fa';
+
+  const button =
+    document.getElementById('languageBtn');
+
+  document.documentElement.lang = language;
+  document.documentElement.dir =
+    LANGUAGE_TEXTS[language].direction;
+
+  document.title =
+    LANGUAGE_TEXTS[language].title;
+
+  if (button) {
+    button.textContent =
+      LANGUAGE_TEXTS[language].button;
+
+    button.onclick = toggleLanguage;
+  }
+}
+
+initializeLanguageButton();
